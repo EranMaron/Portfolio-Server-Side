@@ -7,6 +7,8 @@ const https = require("https"),
 
 var authCode = "";
 
+//comment
+
 const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE, STATE } = consts;
 
 const port = process.env.PORT || 3000;
@@ -14,7 +16,13 @@ const port = process.env.PORT || 3000;
 app.get("/authorize", (req, res) => {
   res.redirect(
     "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=" +
-    CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&state=" + STATE + "&scope=" + SCOPE
+      CLIENT_ID +
+      "&redirect_uri=" +
+      REDIRECT_URI +
+      "&state=" +
+      STATE +
+      "&scope=" +
+      SCOPE
   );
 });
 
@@ -30,25 +38,30 @@ app.get("/callback", (req, res, next) => {
   params.append("client_secret", CLIENT_SECRET);
   params.append("state", STATE);
 
-  axios.post("/oauth/v2/accessToken", params, {
-    baseURL: "https://www.linkedin.com",
-    headers: {
-      Host: "www.linkedin.com",
-      "Content-Type": "application/x-www-form-urlencoded"
-    }
-  })
-    .then(function (response) {
+  axios
+    .post("/oauth/v2/accessToken", params, {
+      baseURL: "https://www.linkedin.com",
+      headers: {
+        Host: "www.linkedin.com",
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    })
+    .then(function(response) {
       var accessToken = response.data.access_token;
 
-      axios.get("/v1/people/~:(id,first-name,last-name,summary,positions~,num-connections,picture-url)?format=json", {
-        baseURL: "https://api.linkedin.com",
-        headers: {
-          Host: "www.linkedin.com",
-          "Content-Type": "application/x-www-form-urlencoded",
-          Authorization: "Bearer " + accessToken
-        }
-      })
-        .then(function (response) {
+      axios
+        .get(
+          "/v1/people/~:(id,first-name,last-name,summary,positions~,num-connections,picture-url)?format=json",
+          {
+            baseURL: "https://api.linkedin.com",
+            headers: {
+              Host: "www.linkedin.com",
+              "Content-Type": "application/x-www-form-urlencoded",
+              Authorization: "Bearer " + accessToken
+            }
+          }
+        )
+        .then(function(response) {
           res.send(JSON.stringify(response.data));
         })
         .catch(err => {
