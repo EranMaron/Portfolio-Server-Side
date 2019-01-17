@@ -1,27 +1,26 @@
-const client_id = "7759iu3fwfxudj",
-  client_secret = "xNb1FQmbhVrj7HqL",
-  redirect_uri = "http://localhost:3000/callback",
-  scope = ["r_basicprofile"];
-let state = "2407";
-var authCode = "";
-const https = require("https");
-const axios = require("axios");
+const https = require("https"),
+  axios = require("axios"),
+  url = require("url"),
+  consts = require("./consts.js"),
+  express = require("express"),
+  app = express();
 
-const express = require("express");
-const app = express();
+var authCode = "";
+
+const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, SCOPE, STATE } = consts;
+
 const port = process.env.PORT || 3000;
-const url = require("url");
 
 app.get("/authorize", (req, res) => {
   res.redirect(
     "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=" +
-      client_id +
+      CLIENT_ID +
       "&redirect_uri=" +
-      redirect_uri +
+      REDIRECT_URI +
       "&state=" +
-      state +
+      STATE +
       "&scope=" +
-      scope
+      SCOPE
   );
 });
 
@@ -32,10 +31,10 @@ app.get("/callback", (req, res, next) => {
   const params = new URLSearchParams();
   params.append("grant_type", "authorization_code");
   params.append("code", authCode);
-  params.append("redirect_uri", redirect_uri);
-  params.append("client_id", client_id);
-  params.append("client_secret", client_secret);
-  params.append("state", state);
+  params.append("redirect_uri", REDIRECT_URI);
+  params.append("client_id", CLIENT_ID);
+  params.append("client_secret", CLIENT_SECRET);
+  params.append("state", STATE);
 
   axios
     .post("/oauth/v2/accessToken", params, {
