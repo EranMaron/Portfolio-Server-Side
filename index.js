@@ -13,8 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.get("/authorize", (req, res) => {
   res.redirect(
-    "https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=" +
-    CLIENT_ID + "&redirect_uri=" + REDIRECT_URI + "&state=" + STATE + "&scope=" + SCOPE
+    `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=${STATE}&scope=${SCOPE}`
   );
 });
 
