@@ -17,9 +17,9 @@ module.exports = {
     let answers = req.query;
     console.log(answers.param1);
 
-    // const response = await axiosCreat.get("/search/photos", {
-    //   params: { query: term, orientation: "squarish", per_page: 3 }
-    // });
+    const response = await axiosCreat.get("/search/photos", {
+      params: { query: term, orientation: "squarish", per_page: 3 }
+    });
 
     // console.log(response.data.results);
   }
