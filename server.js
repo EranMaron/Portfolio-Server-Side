@@ -21,6 +21,7 @@ app.use((req, res, next) => {
 
 /*** All routes ***/
 app.get("/authorize", linkedinCtl.linkedinConnect);
+app.get("/photos", unsplashCtl.getphotos);
 app.get("/callback", linkedinCtl.callback);
 app.get("/check", (req, res) => {
   res.send("back in server");

@@ -70,6 +70,7 @@ module.exports = {
     saveTodb = result => {
       //saving to db logic including checking id...
       console.log(result);
+      // res.send(result);
       res.redirect("/check");
     };
   }
