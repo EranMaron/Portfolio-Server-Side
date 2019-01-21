@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const consts = require("./consts");
 
-const { MLAB_URL, DB_USER, DB_PASS } = consts;
+const {MLAB_URL, DB_USER, DB_PASS} = consts;
 const url = MLAB_URL;
 
 const options = {
@@ -13,9 +13,6 @@ const options = {
 };
 
 mongoose
-  .connect(
-    url,
-    options
-  )
+  .connect(url, options)
   .then(() => console.log("connected"))
   .catch(err => console.log(`connection error: ${err}`));
