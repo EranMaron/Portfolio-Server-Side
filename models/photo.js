@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
 let photo = new mongoose.Schema({
-  keyWord: String,
+  id: String,
   url: String
 });
 
-module.exports = photo;
+const Photo = mongoose.model("Photo", photo);
+module.exports = Photo;

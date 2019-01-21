@@ -1,6 +1,6 @@
 const consts = require("../consts.js"),
   User = require("../models/user"),
-  photo = require("../models/photo"),
+  Photo = require("../models/photo"),
   axios = require("axios");
 
 const { UNSPLASH_KEY, UNSPLASH_SECRET } = consts;
@@ -14,51 +14,57 @@ const axiosCreat = axios.create({
 
 module.exports = {
   async getphotos(req, res) {
-    let answers = req.query;
-    console.log(answers.param1);
+    let answers = req.query,
+      numOfParams = Object.keys(answers).length,
+      numOfphotos = 4,
+      indexOfPhoto = 0;
 
-    const param1 = await axiosCreat.get("/search/photos", {
-      params: {
-        query: `${answers.param1}`,
-        orientation: "landscape",
-        per_page: 3
-      }
-    });
+    let results = new Array();
 
-    const param2 = await axiosCreat.get("/search/photos", {
-      params: {
-        query: `${answers.param2}`,
-        orientation: "landscape",
-        per_page: 3
-      }
-    });
+    for (let i = 0; i < numOfParams; i++) {
+      let result = await axiosCreat
+        .get("/search/photos", {
+          params: {
+            query: `${answers[Object.keys(answers)[i]]}`,
+            orientation: "landscape",
+            per_page: numOfphotos
+          }
+        })
+        .catch(err => console.log(err));
 
-    const param3 = await axiosCreat.get("/search/photos", {
-      params: {
-        query: `${answers.param3}`,
-        orientation: "landscape",
-        per_page: 3
-      }
-    });
+      results.push(result.data.results);
+    }
 
-    //console.log(param1.data.results[0].urls.regular);
+    for (let i = 0; i < numOfParams; i++) {
+      let photoId = results[i][indexOfPhoto].id,
+        photoUrl = results[i][indexOfPhoto].urls.regular;
 
-    User.findOne({ _id: "111ab" }, (err, result) => {
-      if (err) throw err;
-
-      console.log(param1.data.results[0].urls.regular);
-
-      result.photos.push({
-        keyWord: answers.param1,
-        url: param1.data.results[0].urls.regular
-      });
-
-      result.save(err => {
+      Photo.findOne({ id: photoId }, (err, result) => {
         if (err) throw err;
-        console.log("Success!");
-      });
-    });
+        if (!result) {
+          const photo = new Photo({
+            id: photoId,
+            url: photoUrl
+          });
 
-    // console.log(response.data.results);
+          photo.save(err => {
+            if (err) console.log(err);
+            else {
+              console.log(`Saved photo ${JSON.stringify(photo)}`);
+            }
+          });
+        }
+
+        User.findOne({ id: "jFkde_Tvab" }, (err, result) => {
+          if (err) throw err;
+          else if (result) {
+            result.photos.push(`${photoId}`);
+            result.save(err => {
+              if (err) throw err;
+            });
+          }
+        });
+      });
+    }
   }
 };
