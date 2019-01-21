@@ -1,14 +1,8 @@
-const mongoose = require("mongoose"),
-  photo = new mongoose.Schema({
-    id: String,
-    photos: [
-      {
-        keyWord: String,
-        url: String
-      }
-    ]
-  });
+const mongoose = require("mongoose");
 
-const Photo = mongoose.model("Photo", photo);
+let photo = new mongoose.Schema({
+  keyWord: String,
+  url: String
+});
 
-module.exports = Photo;
+module.exports = photo;

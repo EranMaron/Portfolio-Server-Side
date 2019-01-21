@@ -1,17 +1,20 @@
-const Profile = require("./profile"),
-  Photo = require("./profile");
+const mongoose = require("mongoose");
+const profile = require("./profile"),
+  photo = require("./photo");
 
-const mongoose = require("mongoose"),
-  user = new mongoose.Schema({
-    id: {
+const user = new mongoose.Schema(
+  {
+    _id: {
       type: String,
       index: 1
     },
     firstName: String,
     lastName: String,
-    profile: Profile,
-    photo: Photo
-  });
+    profile: profile,
+    photos: [photo]
+  },
+  { collection: "users" }
+);
 
 const User = mongoose.model("User", user);
 
