@@ -17,6 +17,6 @@ module.exports = {
 		// console.log(req);
 		// console.log(res);
 		console.log("In Callback");
-		res.redirect("./check");
+		/* res.redirect("./check"); */
 	},
 };

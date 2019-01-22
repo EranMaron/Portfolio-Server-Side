@@ -1,6 +1,15 @@
-const mongoose = require("mongoose"),
-  profile = new mongoose.Schema({});
+const mongoose = require("mongoose");
 
-const Profile = mongoose.model("Profile", profile);
+let profile = new mongoose.Schema({
+  headLine: String,
+  summary: String,
+  numOfConnections: Number,
+  profilePicture: String,
+  currentPosition: {
+    title: String,
+    company: String,
+    summary: String
+  }
+});
 
-module.exports = Profile;
+module.exports = profile;

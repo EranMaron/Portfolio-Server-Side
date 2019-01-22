@@ -23,8 +23,8 @@ app.use((req, res, next) => {
 /*** All routes ***/
 app.get("/authorize", linkedinCtl.linkedinConnect);
 app.get("/callback", middlewares.getAccessCode, middlewares.setAccessToken, linkedinCtl.callback);
-app.get("/check", (req, res) => {
-	res.send("Back To Server");
+app.get("/questions/:id", (req, res) => {
+	console.log("In questions URL");
 });
 
 app.listen(port, () => console.log(`listening on port ${port}`));
